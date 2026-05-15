@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ publication_name }} — {{ subject }}</title>
+<!--[if mso]>
+<noscript><xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml></noscript>
+<![endif]-->
+</head>
+<body style="margin:0;padding:0;background-color:#f0ece4;font-family:Georgia,'Times New Roman',serif;">
+
+<!-- Preheader -->
+<div style="display:none;font-size:1px;color:#f0ece4;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">
+  {{ preview_text }}
+</div>
+
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f0ece4;">
+  <tr>
+    <td align="center" style="padding:32px 16px;">
+      <table role="presentation" width="620" cellpadding="0" cellspacing="0" style="max-width:620px;width:100%;background-color:#faf8f4;">
+
+        <!-- Top rule -->
+        <tr>
+          <td>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr><td style="background-color:#1a1a2e;height:5px;font-size:0;line-height:0;">&nbsp;</td></tr>
+              <tr><td style="background-color:#c8102e;height:2px;font-size:0;line-height:0;">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Masthead -->
+        <tr>
+          <td style="padding:28px 40px 0;text-align:center;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <p style="margin:0 0 12px;font-family:Arial,sans-serif;font-size:10px;letter-spacing:4px;text-transform:uppercase;color:#888880;">{{ issue_date }}</p>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
+              <tr><td style="border-top:1px solid #1a1a2e;"></td></tr>
+            </table>
+            <h1 style="margin:0 0 6px;font-family:Georgia,'Times New Roman',serif;font-size:42px;font-weight:700;color:#1a1a2e;letter-spacing:-1px;line-height:1.1;">{{ publication_name }}</h1>
+            <p style="margin:0 0 10px;font-family:Georgia,serif;font-size:13px;font-style:italic;color:#555550;letter-spacing:0.3px;">{{ publication_tagline }}</p>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:0;">
+              <tr><td style="border-top:1px solid #1a1a2e;"></td></tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Issue label -->
+        <tr>
+          <td style="padding:8px 40px 24px;text-align:center;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#888880;">Issue No. {{ issue_number }} &nbsp;·&nbsp; {{ subject }}</p>
+          </td>
+        </tr>
+
+        <!-- Headline + deck -->
+        <tr>
+          <td style="padding:0 40px 24px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:16px;">
+              <tr><td style="border-top:2px solid #1a1a2e;"></td></tr>
+            </table>
+            <h2 style="margin:0 0 12px;font-family:Georgia,'Times New Roman',serif;font-size:30px;font-weight:700;color:#1a1a2e;line-height:1.25;">{{ headline }}</h2>
+            <p style="margin:0 0 14px;font-family:Georgia,'Times New Roman',serif;font-size:16px;font-style:italic;color:#444440;line-height:1.6;">{{ deck }}</p>
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr><td style="border-top:1px solid #bbb8b0;"></td></tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Byline -->
+        <tr>
+          <td style="padding:8px 40px 24px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;color:#888880;">By <span style="color:#1a1a2e;font-weight:700;">{{ publication_name }} Research Desk</span> &nbsp;|&nbsp; {{ sources_byline }}</p>
+          </td>
+        </tr>
+
+        <!-- Stat bar -->
+        <tr>
+          <td style="padding:0 40px 28px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#1a1a2e;">
+              <tr>
+                <td style="padding:20px 0;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+                    <tr>
+                      {% for stat in hero_stats %}
+                      <td style="text-align:center;padding:0 12px;">
+                        <p style="margin:0 0 4px;font-family:Georgia,serif;font-size:34px;font-weight:700;color:#ffffff;line-height:1;">{{ stat.number }}</p>
+                        <p style="margin:0;font-family:Arial,sans-serif;font-size:10px;letter-spacing:1px;text-transform:uppercase;color:#c8102e;">{{ stat.label }}</p>
+                        <p style="margin:2px 0 0;font-family:Arial,sans-serif;font-size:10px;color:#aaaaaa;">{{ stat.sublabel }}</p>
+                      </td>
+                      {% if not loop.last %}
+                      <td width="1" style="background-color:#333350;">&nbsp;</td>
+                      {% endif %}
+                      {% endfor %}
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Opening paragraph with drop cap -->
+        <tr>
+          <td style="padding:0 40px 20px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:16px;line-height:1.8;color:#222220;">
+              <span style="font-size:42px;font-weight:700;color:#1a1a2e;float:left;line-height:0.75;margin:6px 6px 0 0;font-family:Georgia,serif;">{{ hook_intro[0] }}</span>{{ hook_intro[1:] }}
+            </p>
+          </td>
+        </tr>
+
+        <!-- Main sections -->
+        {% for section in sections_list %}
+        <tr>
+          <td style="padding:0 40px 20px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:10px;">
+              <tr>
+                <td width="28" style="border-top:2px solid #c8102e;padding-top:6px;vertical-align:top;">
+                  <p style="margin:0;font-family:Arial,sans-serif;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#c8102e;white-space:nowrap;">{{ '%02d' % loop.index }}</p>
+                </td>
+                <td style="padding-left:12px;border-top:1px solid #bbb8b0;">
+                  <p style="margin:6px 0 0;font-family:Arial,sans-serif;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#1a1a2e;font-weight:700;">{{ section.title }}</p>
+                </td>
+              </tr>
+            </table>
+            <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:15px;line-height:1.75;color:#333330;">{{ section.body }}</p>
+          </td>
+        </tr>
+        {% endfor %}
+
+        <!-- Pull quote -->
+        <tr>
+          <td style="padding:0 40px 20px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td width="4" style="background-color:#c8102e;">&nbsp;</td>
+                <td style="padding:12px 0 12px 20px;">
+                  <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:19px;font-style:italic;color:#1a1a2e;line-height:1.4;">{{ pull_quote }}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- SVG infographics -->
+        {% for svg in svgs %}
+        <tr>
+          <td style="padding:0 40px 28px;text-align:center;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            {{ svg.code }}
+          </td>
+        </tr>
+        {% endfor %}
+
+        <!-- Key data points header -->
+        <tr>
+          <td style="padding:0 40px 20px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="border-top:2px solid #1a1a2e;padding-top:8px;">
+                  <p style="margin:0;font-family:Arial,sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#1a1a2e;font-weight:700;">Key Data Points</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Key stats two-column -->
+        <tr>
+          <td style="padding:0 40px 28px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr valign="top">
+                <td width="48%" style="padding-right:16px;">
+                  {% for stat in key_stats[:3] %}
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:{% if not loop.last %}16px{% else %}0{% endif %};border-top:1px solid #bbb8b0;">
+                    <tr><td style="padding:10px 0 0;">
+                      <p style="margin:0 0 2px;font-family:Georgia,serif;font-size:22px;font-weight:700;color:#1a1a2e;line-height:1;">{{ stat.number }}</p>
+                      <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;color:#555550;line-height:1.4;">{{ stat.description }}</p>
+                    </td></tr>
+                  </table>
+                  {% endfor %}
+                </td>
+                <td width="4%">&nbsp;</td>
+                <td width="48%" style="padding-left:16px;border-left:1px solid #ddd9d0;">
+                  {% for stat in key_stats[3:] %}
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:{% if not loop.last %}16px{% else %}0{% endif %};border-top:1px solid #bbb8b0;">
+                    <tr><td style="padding:10px 0 0;">
+                      <p style="margin:0 0 2px;font-family:Georgia,serif;font-size:22px;font-weight:700;color:#1a1a2e;line-height:1;">{{ stat.number }}</p>
+                      <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;color:#555550;line-height:1.4;">{{ stat.description }}</p>
+                    </td></tr>
+                  </table>
+                  {% endfor %}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Three things worth knowing -->
+        <tr>
+          <td style="padding:0 40px 20px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr>
+                <td style="border-top:2px solid #1a1a2e;padding-top:8px;">
+                  <p style="margin:0;font-family:Arial,sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#1a1a2e;font-weight:700;">Three Things Worth Knowing</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:0 40px 28px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            {% set numerals = ['I.', 'II.', 'III.'] %}
+            {% for insight in quick_insights %}
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:{% if not loop.last %}14px{% else %}0{% endif %};border-top:1px solid #ddd9d0;">
+              <tr><td style="padding:12px 0 0;">
+                <p style="margin:0 0 3px;font-family:Arial,sans-serif;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:#c8102e;">{{ numerals[loop.index0] if loop.index0 < 3 else loop.index ~ '.' }}</p>
+                <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:14px;line-height:1.65;color:#333330;">{{ insight }}</p>
+              </td></tr>
+            </table>
+            {% endfor %}
+          </td>
+        </tr>
+
+        <!-- Sources -->
+        <tr>
+          <td style="padding:0 40px 24px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:1px solid #bbb8b0;">
+              <tr>
+                <td style="padding:12px 0 0;">
+                  <p style="margin:0 0 8px;font-family:Arial,sans-serif;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#888880;font-weight:700;">Sources</p>
+                  {% for source in sources %}
+                  <p style="margin:0 0 4px;font-family:Arial,sans-serif;font-size:11px;color:#555550;line-height:1.4;">
+                    <a href="{{ source.url }}" style="color:#1a1a2e;text-decoration:none;">{{ source.title }}</a>
+                  </p>
+                  {% endfor %}
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Closing CTA -->
+        <tr>
+          <td style="padding:0 40px 32px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-top:2px solid #1a1a2e;">
+              <tr>
+                <td style="padding:16px 0 0;">
+                  <p style="margin:0;font-family:Georgia,'Times New Roman',serif;font-size:15px;font-style:italic;line-height:1.7;color:#1a1a2e;">{{ closing_cta }}</p>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <!-- Footer rules -->
+        <tr>
+          <td style="border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+              <tr><td style="background-color:#c8102e;height:2px;font-size:0;line-height:0;">&nbsp;</td></tr>
+              <tr><td style="background-color:#1a1a2e;height:3px;font-size:0;line-height:0;">&nbsp;</td></tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding:16px 40px;border-left:1px solid #ddd9d0;border-right:1px solid #ddd9d0;border-bottom:1px solid #ddd9d0;text-align:center;">
+            <p style="margin:0;font-family:Arial,sans-serif;font-size:10px;color:#888880;letter-spacing:1px;">{{ publication_name | upper }} &nbsp;·&nbsp; ISSUE NO. {{ issue_number }} &nbsp;·&nbsp; {{ issue_date | upper }} &nbsp;·&nbsp; BUILT WITH THE WAT FRAMEWORK</p>
+          </td>
+        </tr>
+
+      </table>
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

@@ -1,0 +1,12 @@
+anthropic
+requests
+beautifulsoup4
+feedparser
+python-dotenv
+google-auth
+google-auth-oauthlib
+google-api-python-client
+tavily-python
+jinja2
+google-genai
+groq
