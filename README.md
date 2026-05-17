@@ -4,7 +4,13 @@ Give it a topic → get a polished HTML newsletter in your Gmail inbox.
 
 Built on the **WAT framework** (Workflows, Agents, Tools): AI handles reasoning, Python scripts handle execution.
 
-## Preview
+## Web Interface
+
+![App UI](assets/app-ui.png)
+
+Enter a topic, audience, tone, and email — the pipeline runs automatically and the newsletter lands in your inbox.
+
+## Newsletter Output
 
 ![Newsletter preview](assets/newsletter-preview.png)
 
@@ -39,22 +45,21 @@ GMAIL_SENDER=you@gmail.com
 - Add your email as a test user under OAuth consent screen
 - Run `python tools/send_email_gmail.py` once to complete the browser auth flow (saves `token.json`)
 
-## Usage
+## Running the Web App
 
 ```bash
-# 1. Search
+python app.py
+```
+
+Then open **http://127.0.0.1:8080** in your browser.
+
+## CLI Usage
+
+```bash
 python tools/search_web.py --topic "AI in operations" --max-results 10
-
-# 2. Fetch top articles
-python tools/fetch_article.py --url <url> >> .tmp/article_texts.json
-
-# 3. Generate content
+python tools/fetch_article.py --url <url>
 python tools/generate_newsletter_content.py --topic "AI in operations" --audience "product leaders"
-
-# 4. Render HTML
 python tools/render_newsletter_html.py
-
-# 5. Send
 python tools/send_email_gmail.py --subject "Your subject here"
 ```
 
@@ -63,8 +68,11 @@ Or follow the full SOP in [workflows/generate_newsletter.md](workflows/generate_
 ## Project Structure
 
 ```
+app.py          # Flask web app
 tools/          # Python scripts (search, fetch, generate, render, send)
+templates/      # Web app HTML
 workflows/      # Markdown SOPs defining the end-to-end process
+assets/         # Screenshots
 .tmp/           # Intermediate files (regenerated each run)
 .env            # API keys (never commit this)
 ```
@@ -73,6 +81,7 @@ workflows/      # Markdown SOPs defining the end-to-end process
 
 | Task | Tool |
 |---|---|
+| Web interface | Flask |
 | Web research | Tavily API |
 | Content generation | Groq (Llama 3.3 70B) |
 | HTML templating | Jinja2 |
