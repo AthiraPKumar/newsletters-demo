@@ -10,3 +10,6 @@ tavily-python
 jinja2
 google-genai
 groq
+flask
+gunicorn
+json-repair

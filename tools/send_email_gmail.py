@@ -8,6 +8,7 @@ Usage:
 
 import argparse
 import base64
+import json
 import os
 import sys
 from email.mime.multipart import MIMEMultipart
@@ -30,19 +31,33 @@ def get_gmail_service():
     token_path = Path("token.json")
     creds_path = Path("credentials.json")
 
-    if token_path.exists():
+    # Support env vars for deployed environments (Render, etc.)
+    token_json_env = os.getenv("GMAIL_TOKEN_JSON")
+    creds_json_env = os.getenv("GMAIL_CREDENTIALS_JSON")
+
+    if token_json_env:
+        creds = Credentials.from_authorized_user_info(json.loads(token_json_env), SCOPES)
+    elif token_path.exists():
         creds = Credentials.from_authorized_user_file(str(token_path), SCOPES)
 
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
         else:
-            if not creds_path.exists():
-                print("ERROR: credentials.json not found. Download it from Google Cloud Console.", file=sys.stderr)
+            if creds_json_env:
+                import tempfile
+                tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False)
+                tmp.write(creds_json_env)
+                tmp.close()
+                flow = InstalledAppFlow.from_client_secrets_file(tmp.name, SCOPES)
+            elif creds_path.exists():
+                flow = InstalledAppFlow.from_client_secrets_file(str(creds_path), SCOPES)
+            else:
+                print("ERROR: No Gmail credentials found.", file=sys.stderr)
                 sys.exit(1)
-            flow = InstalledAppFlow.from_client_secrets_file(str(creds_path), SCOPES)
             creds = flow.run_local_server(port=0)
-        token_path.write_text(creds.to_json())
+        if token_path.parent.exists():
+            token_path.write_text(creds.to_json())
 
     return build("gmail", "v1", credentials=creds)
 

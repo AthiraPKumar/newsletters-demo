@@ -20,6 +20,7 @@ from pathlib import Path
 
 from groq import Groq
 from dotenv import load_dotenv
+from json_repair import repair_json
 
 load_dotenv()
 
@@ -41,6 +42,7 @@ You also produce SVG infographics to go with the newsletter:
 - Use a clean, modern design: dark background (#1a1a2e), accent color (#e94560), white text
 - Types to create: stat callout card, key takeaways visual, or mini-timeline
 - SVGs must use inline styles only (no external CSS)
+- CRITICAL: In SVG code, use ONLY single quotes for all attribute values — never double quotes inside SVG, as it will break the JSON encoding
 
 Return your response as a single valid JSON object with this exact structure:
 {
@@ -122,11 +124,13 @@ def generate(topic: str, audience: str, tone: str, search_results: list, article
 
     try:
         return json.loads(raw)
-    except json.JSONDecodeError as e:
-        print(f"ERROR: Model returned invalid JSON: {e}", file=sys.stderr)
-        Path(".tmp/raw_llm_response.txt").write_text(raw, encoding="utf-8")
-        print("Raw response saved to .tmp/raw_llm_response.txt", file=sys.stderr)
-        sys.exit(1)
+    except json.JSONDecodeError:
+        # Use json-repair to fix common LLM issues (unescaped quotes in SVGs, trailing commas, etc.)
+        try:
+            return json.loads(repair_json(raw))
+        except Exception as e:
+            Path(".tmp/raw_llm_response.txt").write_text(raw, encoding="utf-8")
+            raise ValueError(f"Model returned invalid JSON: {e}")
 
 
 def main():

@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Newsletter Generator</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: Georgia, 'Times New Roman', serif;
+      background: #f0ece4;
+      color: #1a1a2e;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 40px 20px 80px;
+    }
+
+    /* ── Header ── */
+    header {
+      width: 100%;
+      max-width: 680px;
+      text-align: center;
+      margin-bottom: 48px;
+    }
+    .rule-top {
+      border: none;
+      border-top: 5px solid #1a1a2e;
+      margin-bottom: 3px;
+    }
+    .rule-accent {
+      border: none;
+      border-top: 2px solid #c8102e;
+      margin-bottom: 24px;
+    }
+    .masthead {
+      font-size: 2.6rem;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: #1a1a2e;
+      line-height: 1.1;
+    }
+    .tagline {
+      font-style: italic;
+      color: #555;
+      font-size: 0.95rem;
+      margin-top: 6px;
+    }
+    .rule-bottom {
+      border: none;
+      border-top: 1px solid #1a1a2e;
+      margin-top: 20px;
+    }
+
+    /* ── Card ── */
+    .card {
+      width: 100%;
+      max-width: 680px;
+      background: #fff;
+      border: 1px solid #d8d0c4;
+      padding: 40px 48px;
+    }
+
+    .card-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #1a1a2e;
+      margin-bottom: 28px;
+      font-family: 'Arial Narrow', Arial, sans-serif;
+    }
+
+    /* ── Form ── */
+    .field {
+      margin-bottom: 22px;
+    }
+    label {
+      display: block;
+      font-family: 'Arial Narrow', Arial, sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 6px;
+    }
+    label span {
+      color: #c8102e;
+    }
+    input, select {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid #c8c0b4;
+      background: #faf8f4;
+      font-family: Georgia, serif;
+      font-size: 0.95rem;
+      color: #1a1a2e;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+    input:focus, select:focus {
+      border-color: #1a1a2e;
+    }
+    input::placeholder {
+      color: #aaa;
+      font-style: italic;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 14px;
+      background: #1a1a2e;
+      color: #fff;
+      font-family: 'Arial Narrow', Arial, sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-top: 8px;
+    }
+    .btn:hover { background: #c8102e; }
+    .btn:disabled { background: #888; cursor: not-allowed; }
+
+    /* ── Progress ── */
+    #progress {
+      display: none;
+      margin-top: 36px;
+      border-top: 1px solid #e0d8cc;
+      padding-top: 28px;
+    }
+
+    .progress-title {
+      font-family: 'Arial Narrow', Arial, sans-serif;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: #888;
+      margin-bottom: 16px;
+    }
+
+    .steps { list-style: none; }
+    .step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 10px 0;
+      border-bottom: 1px solid #f0e8dc;
+      font-size: 0.9rem;
+      color: #aaa;
+      transition: color 0.3s;
+    }
+    .step:last-child { border-bottom: none; }
+    .step-icon {
+      width: 22px;
+      height: 22px;
+      flex-shrink: 0;
+      border-radius: 50%;
+      background: #e8e0d8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.65rem;
+      font-family: Arial, sans-serif;
+      font-weight: 700;
+      color: #bbb;
+      margin-top: 1px;
+    }
+    .step.active { color: #1a1a2e; }
+    .step.active .step-icon {
+      background: #1a1a2e;
+      color: #fff;
+    }
+    .step.done { color: #2d6a4f; }
+    .step.done .step-icon {
+      background: #2d6a4f;
+      color: #fff;
+    }
+    .step.error { color: #c8102e; }
+    .step.error .step-icon {
+      background: #c8102e;
+      color: #fff;
+    }
+
+/* ── Loading bar ── */
+    .loader-bar-wrap {
+      height: 4px;
+      background: #e8e0d8;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+    .loader-bar {
+      height: 100%;
+      background: #c8102e;
+      width: 0%;
+      transition: width 0.6s ease;
+    }
+
+    /* ── Status label ── */
+    .progress-status {
+      font-family: Arial, sans-serif;
+      font-size: 0.78rem;
+      color: #555;
+      margin-bottom: 14px;
+      min-height: 18px;
+    }
+
+    /* ── Success banner ── */
+    #success {
+      display: none;
+      margin-top: 28px;
+      background: #1a1a2e;
+      color: #fff;
+      padding: 20px 24px;
+      text-align: center;
+    }
+    #success .success-headline {
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      margin-bottom: 4px;
+    }
+    #success .success-sub {
+      font-family: Arial, sans-serif;
+      font-size: 0.8rem;
+      color: #aaa;
+      font-style: normal;
+    }
+
+    /* ── Error banner ── */
+    #error-banner {
+      display: none;
+      margin-top: 28px;
+      background: #fff0f0;
+      border-left: 4px solid #c8102e;
+      padding: 14px 18px;
+      font-family: Arial, sans-serif;
+      font-size: 0.85rem;
+      color: #c8102e;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 40px;
+      font-family: Arial, sans-serif;
+      font-size: 0.75rem;
+      color: #aaa;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <hr class="rule-top" />
+    <hr class="rule-accent" />
+    <div class="masthead">AI Newsletter Generator</div>
+    <div class="tagline">Research → Write → Design → Deliver, automatically</div>
+    <hr class="rule-bottom" />
+  </header>
+
+  <div class="card">
+    <div class="card-title">Generate a Newsletter</div>
+
+    <form id="newsletter-form">
+      <div class="field">
+        <label>Topic <span>*</span></label>
+        <input type="text" name="topic" placeholder="e.g. AI agents in healthcare" required />
+      </div>
+
+      <div class="field">
+        <label>Target Audience</label>
+        <input type="text" name="audience" placeholder="e.g. product managers, technical founders" value="general professionals" />
+      </div>
+
+      <div class="field">
+        <label>Tone</label>
+        <select name="tone">
+          <option value="informed but conversational">Informed but conversational</option>
+          <option value="formal and analytical">Formal and analytical</option>
+          <option value="casual and punchy">Casual and punchy</option>
+          <option value="executive briefing">Executive briefing</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label>Deliver to <span>*</span></label>
+        <input type="email" name="email" placeholder="you@gmail.com" required />
+      </div>
+
+      <button type="submit" class="btn" id="submit-btn">Generate &amp; Send Newsletter</button>
+    </form>
+
+    <!-- Progress -->
+    <div id="progress">
+      <div class="progress-title">Pipeline Progress</div>
+      <div class="loader-bar-wrap"><div class="loader-bar" id="loader-bar"></div></div>
+      <div class="progress-status" id="progress-status">Starting…</div>
+      <ul class="steps">
+        <li class="step" id="step-1">
+          <div class="step-icon" id="icon-1">1</div>
+          <span id="msg-1">Search the web for recent articles</span>
+        </li>
+        <li class="step" id="step-2">
+          <div class="step-icon" id="icon-2">2</div>
+          <span id="msg-2">Fetch &amp; extract article content</span>
+        </li>
+        <li class="step" id="step-3">
+          <div class="step-icon" id="icon-3">3</div>
+          <span id="msg-3">Generate newsletter with AI</span>
+        </li>
+        <li class="step" id="step-4">
+          <div class="step-icon" id="icon-4">4</div>
+          <span id="msg-4">Render HTML email</span>
+        </li>
+        <li class="step" id="step-5">
+          <div class="step-icon" id="icon-5">5</div>
+          <span id="msg-5">Send to inbox</span>
+        </li>
+      </ul>
+    </div>
+
+    <!-- Success -->
+    <div id="success">
+      <div class="success-headline">Newsletter Delivered</div>
+      <div class="success-sub" id="success-sub">Check your inbox.</div>
+    </div>
+
+    <!-- Error -->
+    <div id="error-banner" id="error-msg"></div>
+  </div>
+
+  <footer>Powered by Tavily · Groq · Gmail API · Flask</footer>
+
+  <script>
+    const form = document.getElementById('newsletter-form');
+    const btn = document.getElementById('submit-btn');
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      // Reset UI
+      btn.disabled = true;
+      btn.textContent = 'Generating…';
+      document.getElementById('progress').style.display = 'block';
+      document.getElementById('success').style.display = 'none';
+      document.getElementById('error-banner').style.display = 'none';
+      document.getElementById('loader-bar').style.width = '0%';
+      document.getElementById('progress-status').textContent = 'Starting…';
+      [1,2,3,4,5].forEach(n => {
+        const icon = document.getElementById('icon-' + n);
+        const msg  = document.getElementById('msg-'  + n);
+        icon.style.cssText = 'background:#e8e0d8;color:#bbb;';
+        icon.textContent = n;
+        msg.style.color = '#aaa';
+      });
+
+      // Start pipeline — server returns job_id immediately
+      const data = new FormData(form);
+      const resp = await fetch('/generate', { method: 'POST', body: data });
+      const { job_id, error: startErr } = await resp.json();
+
+      if (startErr) {
+        document.getElementById('error-banner').style.display = 'block';
+        document.getElementById('error-banner').textContent = startErr;
+        btn.disabled = false;
+        btn.textContent = 'Try Again';
+        return;
+      }
+
+      // Poll every second — redraw ALL 5 steps completely on every tick
+      const STEP_DEFAULT_LABELS = [
+        '', 'Search the web', 'Read articles', 'Generate with AI', 'Render HTML email', 'Send to inbox'
+      ];
+
+      function redrawSteps(currentStep, msg, isDone, isError) {
+        for (let i = 1; i <= 5; i++) {
+          const iconEl = document.getElementById('icon-' + i);
+          const msgEl  = document.getElementById('msg-'  + i);
+
+          if (isDone || i < currentStep) {
+            iconEl.style.cssText = 'background:#2d6a4f;color:#fff;';
+            iconEl.textContent = '✓';
+            msgEl.style.color = '#2d6a4f';
+            if (i === currentStep) msgEl.textContent = msg;
+
+          } else if (i === currentStep) {
+            iconEl.style.cssText = isError
+              ? 'background:#c8102e;color:#fff;'
+              : 'background:#1a1a2e;color:#fff;';
+            iconEl.textContent = isError ? '✕' : i;
+            msgEl.style.color = isError ? '#c8102e' : '#1a1a2e';
+            msgEl.textContent = msg;
+            document.getElementById('progress-status').textContent =
+              'Step ' + i + ' of 5 — ' + msg;
+
+          } else {
+            iconEl.style.cssText = 'background:#e8e0d8;color:#bbb;';
+            iconEl.textContent = i;
+            msgEl.style.color = '#aaa';
+          }
+        }
+        document.getElementById('loader-bar').style.width =
+          (isDone ? 100 : Math.round((currentStep - 1) / 5 * 100)) + '%';
+      }
+
+      const poll = setInterval(async () => {
+        let s;
+        try { s = await fetch('/status/' + job_id).then(r => r.json()); }
+        catch { return; }
+        if (!s || !s.step) return;
+
+        redrawSteps(s.step, s.msg, s.done, !!s.error);
+
+        if (s.error) {
+          clearInterval(poll);
+          document.getElementById('error-banner').style.display = 'block';
+          document.getElementById('error-banner').textContent = 'Step ' + s.step + ' failed: ' + s.error;
+          btn.disabled = false;
+          btn.textContent = 'Try Again';
+        }
+
+        if (s.done) {
+          clearInterval(poll);
+          document.getElementById('progress-status').textContent = 'Done!';
+          document.getElementById('loader-bar').style.width = '100%';
+          document.getElementById('success').style.display = 'block';
+          document.getElementById('success-sub').textContent = s.msg;
+          btn.disabled = false;
+          btn.textContent = 'Generate Another';
+        }
+      }, 1000);
+    });
+  </script>
+</body>
+</html>
