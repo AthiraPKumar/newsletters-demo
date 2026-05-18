@@ -43,21 +43,18 @@ def get_gmail_service():
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
-        else:
-            if creds_json_env:
-                import tempfile
-                tmp = tempfile.NamedTemporaryFile(mode="w", suffix=".json", delete=False)
-                tmp.write(creds_json_env)
-                tmp.close()
-                flow = InstalledAppFlow.from_client_secrets_file(tmp.name, SCOPES)
-            elif creds_path.exists():
+        elif token_path.exists() and not token_json_env:
+            # Local dev only: run browser OAuth flow
+            if creds_path.exists():
                 flow = InstalledAppFlow.from_client_secrets_file(str(creds_path), SCOPES)
             else:
-                print("ERROR: No Gmail credentials found.", file=sys.stderr)
-                sys.exit(1)
+                raise RuntimeError("No Gmail credentials found. Run auth flow locally first.")
             creds = flow.run_local_server(port=0)
-        if token_path.parent.exists():
             token_path.write_text(creds.to_json())
+        else:
+            raise RuntimeError(
+                "Gmail token is missing or expired. Set GMAIL_TOKEN_JSON env var with a valid token."
+            )
 
     return build("gmail", "v1", credentials=creds)
 

@@ -4,6 +4,14 @@ Give it a topic → get a polished HTML newsletter in your Gmail inbox.
 
 Built on the **WAT framework** (Workflows, Agents, Tools): AI handles reasoning, Python scripts handle execution.
 
+## Live Demo
+
+Deployed at: **https://newsletters-demo.onrender.com**
+
+![App deployed](assets/app-deployed.png)
+
+All 5 pipeline steps run automatically — web research, article fetching, AI generation, HTML rendering, and email delivery. Each step shows a green tick as it completes.
+
 ## Web Interface
 
 ![App UI](assets/app-ui.png)
