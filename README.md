@@ -8,17 +8,13 @@ Built on the **WAT framework** (Workflows, Agents, Tools): AI handles reasoning,
 
 Deployed at: **https://newsletters-demo.onrender.com**
 
-![App deployed](assets/app-deployed.png)
-
-All 5 pipeline steps run automatically — web research, article fetching, AI generation, HTML rendering, and email delivery. Each step shows a green tick as it completes.
-
-## Web Interface
-
 ![App UI](assets/app-ui.png)
 
-Enter a topic, audience, tone, and email — the pipeline runs automatically and the newsletter lands in your inbox.
+Enter a topic, audience, tone, and email — all 5 pipeline steps run automatically and each shows a green tick as it completes.
 
 ## Newsletter Output
+
+Topic: *AI for climate change & sustainability*
 
 ![Newsletter preview](assets/newsletter-preview.png)
 
